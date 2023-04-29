@@ -1,0 +1,413 @@
+QDialog
+{
+	background-color: white;
+}
+
+QDialog#IdsDialog
+{
+	background-color: black;
+}
+
+QDialog#ProgDialog
+{
+	background-color: rgb(0, 0, 128);
+	color: white;
+}
+
+CustomerDialog
+{
+	background-color: rgb(46, 139, 87);
+}
+
+/*
+QLCDNumber {
+	color: black;
+}
+*/
+
+QGroupBox {
+  border: 1px solid white;
+  border-radius: 10px;
+}
+
+/*
+QListWidget {
+  border: 1px solid white;
+  border-radius: 10px;
+}
+*/
+
+QLabel {
+	color: white;
+}
+
+QHeaderView {
+  background-color: blue;
+}
+
+
+QWidget#CustomerDialog > QGroupBox#groupBox_2 > QPushButton[text = "."]{
+	background-color: white;
+	border: none;
+	border-radius: 3px;
+	color: black;
+	font-size: 20px;
+	font-weight: bold;
+	padding: 5px 10px;
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	border-image: linear-gradient(to bottom, #f5f5f5, #e5e5e5) 1 1;
+	
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+QWidget#CustomerDialog > QGroupBox#groupBox_2 > QPushButton[text = "."]:!pressed {
+	background-image: url("/etc/GP-qt5-materials/images/mech2.jpg");
+}
+
+QWidget#CustomerDialog {
+	background-color: rgb(0, 0, 0);
+	background-image: url("/etc/GP-qt5-materials/images/mainWallPaper.jpg");
+	color: #000000;
+	background-repeat: no-repeat;
+	background-position: center top;
+        background-size: 1024px 600px;
+}
+
+QWidget#CustomerDialog > QGroupBox#groupBox_2 > QPushButton[text = "."]:pressed {
+  background-color: black;
+  background-image: url("/etc/GP-qt5-materials/images/mech1.jpg");
+  color: white;
+}
+
+QGroupBox[title = "Agency"] > QPushButton[text = "."]:hover:!pressed {
+	background-color: rgb(240, 240, 240);
+	color: rgb(240, 240, 240);
+}
+
+/*
+QPushButton[text = "x"]:focus
+{
+border: 2px solid rgb(100%, 0%, 0%);
+}
+*/
+
+
+
+
+
+QPushButton[text = "ReportBugs"]
+{
+	padding: 2px;
+	border-radius: 6px;
+	font-weight: bold;
+	font-size: 10px;
+	text-transform: uppercase;
+	background-color: rgb(75%, 0%, 0%);
+	color: white;
+	border: none;
+	padding: 5px 10px;
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	border-image: linear-gradient(to bottom, #f5f5f5, #e5e5e5) 1 1;
+}
+
+QPushButton:hover:!pressed[text = "ReportBugs"]
+{
+	background-color: rgb(100%, 0%, 0%);
+	color: #ffffff;
+}
+
+QPushButton:pressed[text = "ReportBugs"]
+{
+	background-color: rgb(75%, 0%, 0%);
+	color: rgb(75%, 0%, 0%);
+}
+
+QPushButton[text = "Calendar"]
+{
+	padding: 2px;
+	border-radius: 6px;
+	font-weight: bold;
+	font-size: 10px;
+	text-transform: uppercase;
+	background-color: rgb(80, 80, 80);
+	color: white;
+	border: none;
+	padding: 5px 10px;
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	border-image: linear-gradient(to bottom, #f5f5f5, #e5e5e5) 1 1;
+}
+
+QPushButton:hover[text = "Calendar"]
+{
+	background-color: rgb(46, 139, 87);
+	color: #ffffff;
+}
+
+QPushButton:pressed[text = "Calendar"]
+{
+	background-color: rgb(46, 139, 87);
+	color: rgb(46, 139, 87);
+}
+
+
+
+
+
+
+
+LoginDialog > QPushButton
+{
+	padding: 2px;
+	border-radius: 6px;
+	font-weight: bold;
+	font-size: 10px;
+	text-transform: uppercase;
+	background-color: rgb(0%, 0%, 75%);
+	color: white;
+	border: none;
+	padding: 5px 10px;
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	border-image: linear-gradient(to bottom, #f5f5f5, #e5e5e5) 1 1;
+}
+
+LoginDialog > QPushButton:hover
+{
+	background-color: white;
+	color: rgb(0%, 0%, 75%);
+}
+
+LoginDialog > QPushButton:pressed
+{
+	background-color: rgb(0%, 0%, 75%);
+	color: rgb(0%, 0%, 75%);
+}
+
+
+
+
+
+missIdDialog > QPushButton
+{
+	padding: 2px;
+	border-radius: 6px;
+	font-weight: bold;
+	font-size: 10px;
+	text-transform: uppercase;
+	background-color: rgb(0%, 0%, 75%);
+	color: rgb(0, 0, 128);
+	border: none;
+	padding: 5px 10px;
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	border-image: linear-gradient(to bottom, #f5f5f5, #e5e5e5) 1 1;
+}
+
+missIdDialog > QPushButton:hover
+{
+	background-color: rgb(0%, 0%, 100%);
+	color: #ffffff;
+}
+
+missIdDialog > QPushButton:pressed
+{
+	background-color: rgb(0%, 0%, 75%);
+	color: rgb(0%, 0%, 75%);
+}
+
+
+
+
+
+ProgDialog > QPushButton
+{
+	padding: 2px;
+	border-radius: 6px;
+	font-weight: bold;
+	font-size: 10px;
+	text-transform: uppercase;
+	background-color: white;
+	color: rgb(0, 0, 128);
+	border: none;
+	padding: 5px 10px;
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	border-image: linear-gradient(to bottom, #f5f5f5, #e5e5e5) 1 1;
+}
+
+
+ProgDialog > QPushButton:hover
+{
+	background-color: rgb(0, 0, 128);
+	color: #ffffff;
+}
+
+ProgDialog > QPushButton:pressed
+{
+	background-color: white;
+	color: white;
+}
+
+ProgDialog > QLabel{
+	color: #ffffff;
+}
+
+
+
+
+
+
+
+QDialog > QLineEdit
+{
+	background-color: white;
+	color: blue;
+	padding: 2px;
+	border: 2px solid blue;
+	border-radius: 8px;
+	height: 40px;
+	font-weight: bold;
+	font-size: 10px;
+}
+
+
+
+
+
+QPushButton#missingButton
+{
+	padding: 2px;
+	border-radius: 6px;
+	font-weight: bold;
+	font-size: 10px;
+	text-transform: uppercase;
+	background-color: rgb(75%, 0%, 0%);
+	color: #ffffff;
+	border: none;
+	padding: 5px 10px;
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	border-image: linear-gradient(to bottom, #f5f5f5, #e5e5e5) 1 1;
+}
+
+QPushButton:hover:!pressed#missingButton
+{
+	background-color: rgb(100%, 0%, 0%);
+	color: #ffffff;
+}
+
+QPushButton:pressed#missingButton
+{
+	background-color: rgb(75%, 0%, 0%);
+	color: rgb(75%, 0%, 0%);
+}
+
+
+
+
+
+QPushButton#okButton
+{
+	padding: 2px;
+	border-radius: 6px;
+	font-weight: bold;
+	font-size: 10px;
+	text-transform: uppercase;
+	background-color: rgb(0%, 75%, 0%);
+	color: #ffffff;
+	border: none;
+	padding: 5px 10px;
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	border-image: linear-gradient(to bottom, #f5f5f5, #e5e5e5) 1 1;
+}
+
+QPushButton:hover:!pressed#okButton
+{
+	background-color: rgb(0%, 100%, 0%);
+	color: #ffffff;
+}
+
+QPushButton:pressed#okButton
+{
+	background-color: rgb(0%, 75%, 0%);
+	color: rgb(0%, 75%, 0%);
+}
+
+
+
+
+
+QPushButton[text = "Save"]
+{
+	padding: 2px;
+	border-radius: 6px;
+	font-weight: bold;
+	font-size: 10px;
+	text-transform: uppercase;
+	background-color: rgb(0%, 75%, 0%);
+	color: #ffffff;
+	border: none;
+	padding: 5px 10px;
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	border-image: linear-gradient(to bottom, #f5f5f5, #e5e5e5) 1 1;
+}
+
+QPushButton:hover[text = "Save"]
+{
+	background-color: rgb(0%, 100%, 0%);
+	color: #ffffff;
+}
+
+QPushButton:pressed[text = "Save"]
+{
+	background-color: rgb(0%, 75%, 0%);
+	color: rgb(0%, 75%, 0%);
+}
+
+
+
+
+
+QPushButton[text = "Quit"]
+{
+	padding: 2px;
+	border-radius: 6px;
+	font-weight: bold;
+	font-size: 10px;
+	text-transform: uppercase;
+	background-color: rgb(75%, 0%, 0%);
+	color: #ffffff;
+	border: none;
+	padding: 5px 10px;
+	text-align: center;
+	border-width: 1px;
+	border-style: solid;
+	border-image: linear-gradient(to bottom, #f5f5f5, #e5e5e5) 1 1;
+}
+
+QPushButton:hover:!pressed[text = "Quit"]
+{
+	background-color: rgb(100%, 0%, 0%);
+	color: #ffffff;
+}
+
+QPushButton:pressed[text = "Quit"]
+{
+	background-color: rgb(75%, 0%, 0%);
+	color: rgb(75%, 0%, 0%);
+}
