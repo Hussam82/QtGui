@@ -1,0 +1,15 @@
+[Unit]
+Description=My Qt5 App
+After=multi-user.target local-fs.target weston.service
+Requires=weston.service
+
+[Service]
+User=root
+Restart=on-failure
+Type=oneshot
+EnvironmentFile=/etc/qtapp.env
+ExecStart=/usr/bin/qtapp
+StandardOutput=console
+
+[Install]
+WantedBy=multi-user.target weston.service
