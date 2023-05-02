@@ -71,7 +71,8 @@ set_target_properties(qtapp PROPERTIES
 install(TARGETS qtapp
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(DIRECTORY ./extra/ DESTINATION /etc)
+install(FILES ./extra/qtapp.env DESTINATION /etc)
+install(FILES ./extra/qtapp.service DESTINATION /etc/systemd/system)
 install(DIRECTORY ./GP-qt5-materials/ DESTINATION /etc/GP-qt5-materials)
 
 if(QT_VERSION_MAJOR EQUAL 6)
