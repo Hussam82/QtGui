@@ -1,17 +1,16 @@
-#include "logindialog.h"
 #include "ui_logindialog.h"
 #include <QMessageBox>
 #include "preprocessing.h"
 #include "customerdialog.h"
 #include <QDebug>
+#include <QLabel>
+#include <QMovie>
+#include <QtNetwork>
+#include <QCoreApplication>
+#include "logindialog.h"
 
-
-/* Static sub-master class variables */
-QList<QString> LoginDialog::validID;
-QList<QString> LoginDialog::listOfIds;
-QList<QString> LoginDialog::listOfPass;
-int LoginDialog::selectedId = 0;
-
+/* Static globals */
+QString LoginDialog::global_user_email;
 
 /* Constructor */
 LoginDialog::LoginDialog(QWidget *parent) :
@@ -20,170 +19,171 @@ LoginDialog::LoginDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
-    setWindowTitle("Login window");
-
-
-    /* Place holder text */
-    ui->idLineEdit->setPlaceholderText("Enter a valid ID");
-    ui->passLineEdit->setPlaceholderText("Password");
-
-    /* Enable Clear button */
-    ui->idLineEdit->setClearButtonEnabled(true);
-    ui->passLineEdit->setClearButtonEnabled(true);
-
-    /* Set password mode */
-    ui->passLineEdit->setEchoMode(QLineEdit::Password);
-
     /* Add icon photos */
-    QIcon user(CVISION_IMAGES_DIRECTORY"/user.png");
-    QIcon password(CVISION_IMAGES_DIRECTORY"/pass.png");
+    QIcon user(":/Images/user.png");
 
     /* Add actions */
     ui->idLineEdit->addAction(user, QLineEdit::LeadingPosition);
-    ui->passLineEdit->addAction(password, QLineEdit::LeadingPosition);
 
-    /* The available employees */
-    listOfIds = {EMPLOYEE_ID1,
-                 EMPLOYEE_ID2,
-                 EMPLOYEE_ID3,
-                 EMPLOYEE_ID4};
+    /* Place holder text */
+    ui->idLineEdit->setPlaceholderText("Enter your email");
 
-    /* The available employees passwords (in the same order of listOfIds) */
-    listOfPass = {EMPLOYEE_PASSWORD1,
-                  EMPLOYEE_PASSWORD2,
-                  EMPLOYEE_PASSWORD3,
-                  EMPLOYEE_PASSWORD4};
+    /* Enable Clear button */
+    ui->idLineEdit->setClearButtonEnabled(true);
 
-
-    /* Construct any dialogs here to avoid re-construction */
-    dialog_Id = new IdsDialog(this);
+    /* Remove window title */
+    setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::CustomizeWindowHint);
 }
-
 
 /* Destructor */
 LoginDialog::~LoginDialog()
 {
     qDebug() << "Login destructor call";
     delete ui;
-    delete dialog_Prog;
-    delete dialog_Id;
+}
+
+/* Custom public functions */
+void LoginDialog::insert_char(QString new_text)
+{
+    QWidget *focusWidget = QApplication::focusWidget();
+    // Check which QLineEdit widget has focus
+    if(focusWidget = ui->idLineEdit)
+    {
+        QString current_text = ui->idLineEdit->text();
+        new_text = current_text + new_text;
+        ui->idLineEdit->setText(new_text);
+    }
+    else
+    {
+        qDebug() << "No line edit has focus.";
+    }
 }
 
 
 /* Show the available IDs to choose 1 (if you don't remember yours) */
 void LoginDialog::on_validIdsButton_clicked()
 {
-    dialog_Id->exec();
+    /* ID line edit is empty */
+    if(ui->idLineEdit->text() == EMPTY)
+    {
+        return;
+    }
+
+    /* Display a popup message with no buttons */
+    auto msgbox = new QMessageBox(this);
+    msgbox->setGeometry(850, 450, 250, 200);
+    msgbox->setWindowTitle("Loading...");
+    msgbox->setText("Registeration in progress.");
+    msgbox->setStandardButtons(QMessageBox::NoButton);
+    msgbox->open();
+
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+    connect(manager, &QNetworkAccessManager::finished, this, [=](QNetworkReply *reply)
+    {
+        delete msgbox;
+        QMessageBox registerMB;
+        if (reply->error() == QNetworkReply::NoError)
+        {
+            QByteArray responseData = reply->readAll();
+            registerMB.information(this,
+                                tr("Check your email."),
+                                tr("Your account has been registered successfuly."),
+                                QMessageBox::Ok);
+        }else
+        {
+            QByteArray responseData = reply->readAll();
+            registerMB.information(this,
+                                tr("Incomplete registeration."),
+                                tr("Your account is already registered."),
+                                QMessageBox::Ok);
+            qDebug() << "Request failed:" << reply->errorString();
+        }
+    });
+    QNetworkRequest request(QUrl("https://adas-eece2023.azurewebsites.net/User/Register"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    /* Create the JSON data to send */
+    QString email = ui->idLineEdit->text();
+    QByteArray jsonData = QString(R"({"email": "%1"})").arg(email).toUtf8();
+    manager->post(request, jsonData);
 }
 
 
-/* Submit the ID and password */
+/* Submit the ID */
 void LoginDialog::on_submitButton_clicked()
 {
-    /* SEF confirms a safe entry, WPF gives an error and BAF informs a banned acc */
-    bool submitEntryFlag = FALSE, wrongPassFlag = FALSE, bannedAccFlag = FALSE;
-    /* Check whether ID and password matches listOfIds and listOfPass */
-    for(int i = 0; i < NUM_OF_EMPLOYEES; i++)
+    /* ID line edit is empty */
+    if(ui->idLineEdit->text() == EMPTY)
     {
-        if( ( ui->idLineEdit->text() == EMPTY ) || ( ui->passLineEdit->text() == EMPTY ) )
+        return;
+    }
+    /* Link to the signal and slot */
+    QNetworkRequest request(QUrl("https://adas-eece2023.azurewebsites.net/User/ValidateEmail"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    /* Create the JSON data to send */
+    QString email = ui->idLineEdit->text();
+    /* Remove any spaces in the email */
+    email = email.remove(" ");
+    QByteArray jsonData = QString(R"({"email": "%1"})").arg(email).toUtf8();
+
+    /* Display a popup message with no buttons */
+    auto msgbox = new QMessageBox(this);
+    msgbox->setGeometry(850, 450, 250, 200);
+    msgbox->setWindowTitle("Loading...");
+    msgbox->setText("Email confirmation in progress.");
+    msgbox->setStandardButtons(QMessageBox::NoButton);
+    msgbox->open();
+
+    /* Connect to the server */
+    QNetworkAccessManager *manager = new QNetworkAccessManager(this);
+    manager->post(request, jsonData);
+    connect(manager, &QNetworkAccessManager::finished, this, [=](QNetworkReply *reply)
+    {
+        delete msgbox;
+        if (reply->error() == QNetworkReply::NoError)
         {
-            /* Skip this function if ID or password field is empty */
-            break;
-        }
-        /* Stop looping at the end of banned accounts length */
-        if(i < CustomerDialog::bannedAcc.length())
-        {
-            /* Loop on all of the banned accounts and check if the input is one of them */
-            if(ui->idLineEdit->text() == CustomerDialog::bannedAcc[i])
+            QByteArray responseData = reply->readAll();
+            /* ID is banned */
+            if(responseData == "banned")
             {
-                bannedAccFlag = TRUE;
-                /* You don't have to check password if the ID is banned */
-                break;
+                QMessageBox bannMB;
+                bannMB.critical(this,
+                                tr("Your account is banned"),
+                                tr("Contact a supervisor to unlock."),
+                                QMessageBox::Ok);
+            }
+            /* ID exists */
+            else if(responseData == "true")
+            {
+                global_user_email = email;
+                dialog_Pass = new PassDialog(this);
+                dialog_Pass->exec();
+                accept();
+            }
+            /* ID doesn't exist */
+            else if(responseData == "false")
+            {
+                QMessageBox bannMB;
+                bannMB.critical(this,
+                                tr("Please register first."),
+                                tr("ID doesn't exist."),
+                                QMessageBox::Ok);
+            }
+            else
+            {
+                /* Do nothing */
             }
         }
         else
         {
-            /* Do nothing */
+            qDebug() << "Request failed:" << reply->errorString();
         }
-        /* Confirm a valid entry if the ID and password matches */
-        if( ( ui->idLineEdit->text() == listOfIds[i] ) && ( ui->passLineEdit->text() == listOfPass[i] ) )
-        {
-            submitEntryFlag = TRUE;
-            break;
-        }
-        else
-        {
-            /* Block entrance since the ID is not banned but password is incorrect */
-            wrongPassFlag = TRUE;
-        }
-    }
-    if(submitEntryFlag == TRUE)
-    {
-        dialog_Prog = new ProgDialog(this);
-        dialog_Prog->exec();
-        delete dialog_Prog;
-        accept();
-    }
-    else if(bannedAccFlag == TRUE)
-    {
-        QMessageBox bannMB;
-        bannMB.critical(this,
-                       tr("Your account is banned"),
-                       tr("Contact a supervisor to unlock").arg(5 - CustomerDialog::wrongPass),
-                       QMessageBox::Ok | QMessageBox::Cancel);
-    }
-    else if(wrongPassFlag == TRUE)
-    {
-        /* Increment number of consecutive wrong passwords of this ID */
-        CustomerDialog::wrongPass++;
-        QMessageBox passMB;
-        switch(CustomerDialog::wrongPass)
-        {
-            case 4:
-                passMB.warning(this,
-                                tr("Incorrect ID or password"),
-                                tr("You only have 1 trial before bann!!"),
-                                QMessageBox::Ok | QMessageBox::Cancel);
-
-                break;
-            case 5:
-                CustomerDialog::bannedAcc.append(ui->idLineEdit->text());
-                passMB.critical(this,
-                               tr("Your account is banned"),
-                               tr("Contact a supervisor to unlock").arg(5 - CustomerDialog::wrongPass),
-                               QMessageBox::Ok | QMessageBox::Cancel);
-                // To get here again the next time.
-                CustomerDialog::wrongPass--;
-                reject();
-                break;
-            /* Case [1-3] */
-            default:
-                passMB.information(this,
-                                   tr("Incorrect ID or password"),
-                                   tr("You still have %1 trials").arg(5 - CustomerDialog::wrongPass),
-                                   QMessageBox::Ok | QMessageBox::Cancel);
-                break;
-        }
-    }
-    /* ID or password input is empty */
-    else
-    {
-        /* Do nothing */
-    }
-    /* Clear your ID and password before exiting as the object is not destroyed */
-    if(submitEntryFlag || bannedAccFlag)
-    {
-        ui->idLineEdit->clear();
-        ui->passLineEdit->clear();
-    }
-    else if(wrongPassFlag)
-    {
-        ui->passLineEdit->clear();
-    }
-    else
-    {
-        /* Do nothing */
-    }
+    });
 }
 
+
+void LoginDialog::on_back_button_clicked()
+{
+    this->reject();
+}

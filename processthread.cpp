@@ -11,6 +11,6 @@ void ProcessThread::run()
 {
     QProcess process;
     process.setWorkingDirectory(CVISION_MODELS_DIRECTORY);
-    process.start(m_path);
+    process.start("python3", QStringList() << "-u" << m_path);
     process.waitForFinished();
 }

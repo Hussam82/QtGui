@@ -2,8 +2,10 @@
 #define LOGINDIALOG_H
 
 #include <QDialog>
-#include "idsdialog.h"
 #include "progdialog.h"
+#include <QString>
+#include "passdialog.h"
+
 namespace Ui {
 class LoginDialog;
 }
@@ -15,20 +17,21 @@ class LoginDialog : public QDialog
 public:
     explicit LoginDialog(QWidget *parent = nullptr);
     ~LoginDialog();
-    static QList<QString> validID;
-    static QList<QString> listOfIds;
-    static QList<QString> listOfPass;
-    static int selectedId;
+
+    void insert_char(QString new_text);
+
+    static QString global_user_email;
 
 private slots:
     void on_validIdsButton_clicked();
 
     void on_submitButton_clicked();
 
+    void on_back_button_clicked();
+
 private:
     Ui::LoginDialog *ui;
-    ProgDialog * dialog_Prog;
-    IdsDialog * dialog_Id;
+    PassDialog* dialog_Pass;
     // This'll block doing an object of this class.
     // void setupUi();
 };

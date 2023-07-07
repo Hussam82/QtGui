@@ -26,15 +26,13 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void on_pushButton_3_clicked();
-
     void on_saveButton_clicked();
-
-    void on_loadButton_clicked();
 
     void on_listWidget_currentRowChanged(int currentRow);
 //public slots:
 //    void onMyWidgetClosed(QObject *widget);
+    void on_back_button_clicked();
+
 private:
     Ui::ProgDialog *ui;
     int mnSelected = -1;

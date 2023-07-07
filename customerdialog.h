@@ -6,6 +6,7 @@
 #include <QListWidgetItem>
 #include "processthread.h"
 #include "logindialog.h"
+#include "bugreportingdialog.h"
 
 namespace Ui {
 class CustomerDialog;
@@ -19,8 +20,6 @@ public:
     explicit CustomerDialog(QWidget *parent = nullptr);
     ~CustomerDialog();
     static QList<QListWidgetItem *> usedOptions;
-    static QList<QString> bannedAcc;
-    static int wrongPass;
 
 private slots:
 
@@ -28,13 +27,17 @@ private slots:
 
     void on_saveButton_clicked();
 
-    void on_quitButton_clicked();
-
     void on_programmerButton_clicked();
 
+    void on_back_button_clicked();
+
+    void on_cameraButton_clicked();
+
 private:
-    ProcessThread * thread;
+//    ProcessThread * thread;
     LoginDialog * dialog_Login;
+    bugReportingDialog * dialog_report;
+
 /* To be accessed by progdialog.cpp save customer button */
 public:
     static Ui::CustomerDialog *ui;

@@ -7,6 +7,7 @@
 #include <QCoreApplication>
 #include <QDebug>
 
+
 // The file is global to be able to close it.
 QFile file(CSS_FILE_PATH);
 
@@ -30,9 +31,9 @@ int main(int argc, char *argv[])
     }
     // Closing any opened file is a must.
     file.close();
-    CustomerDialog w;
-    w.setWindowFlags(Qt::FramelessWindowHint);
-    w.setWindowTitle("Configuration Settings");
+
+    MainWindow w;
     w.show();
+
     return a.exec();
 }
